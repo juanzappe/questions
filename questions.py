@@ -22,6 +22,8 @@ answers = [
  ]
  # Índice de la respuesta correcta para cada pregunta, el mismo orden que las preguntas
 correct_answers_index = [1, 2, 0, 3, 1]
+# Puntaje jugador
+puntaje_usuario = 0
 # El usuario deberá contestar 3 preguntas
 for _ in range(3):
  # Se selecciona una pregunta aleatoria
@@ -35,7 +37,7 @@ for _ in range(3):
      try:
        user_answer = int(input("Dame un número entero: "))-1
      except ValueError:
-       print("Esa respuesta no es válida.")
+       print("Esa respuesta no es válida. Juego terminado.")
        sys.exit(1)
      if user_answer < 0 or user_answer >= len(answers[question_index]):
                 print("Respuesta no válida. Juego terminado. ")
@@ -43,7 +45,10 @@ for _ in range(3):
  # Se verifica si la respuesta es correcta
      if user_answer == correct_answers_index[question_index]:
        print("¡Correcto!")
+       puntaje_usuario = puntaje_usuario + 1
        break
+     if user_answer != correct_answers_index[question_index]:
+        puntaje_usuario = puntaje_usuario - 0.5
    else:
  # Si el usuario no responde correctamente después de 2 intentos,
  # se muestra la respuesta correcta
@@ -51,4 +56,5 @@ for _ in range(3):
      print(answers[question_index] [correct_answers_index[question_index]])
  # Se imprime un blanco al final de la pregunta
    print()
+print('Tu puntaje es de ',puntaje_usuario)
 
