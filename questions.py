@@ -1,60 +1,61 @@
 import random
 import sys
- # Preguntas para el juego2
-questions = [
-   "¿Qué función se usa para obtener la longitud de una cadena en Python?",
- "¿Cuál de las siguientes opciones es un número entero en Python?",
- "¿Cómo se solicita entrada del usuario en Python?",
- "¿Cuál de las siguientes expresiones es un comentario válido en Python?",
- "¿Cuál es el operador de comparación para verificar si dos valores son iguales?",]
- # Respuestas posibles para cada pregunta, en el mismo orden que las preguntas
-answers = [
- ("size()", "len()", "length()", "count()"),
- ("3.14", "'42'", "10", "True"),
- ("input()", "scan()", "read()", "ask()"),
- (
- "// Esto es un comentario",
- "/* Esto es un comentario */",
- "-- Esto es un comentario",
- "# Esto es un comentario",
- ),
- ("=", "==", "!=", "==="),
- ]
- # Índice de la respuesta correcta para cada pregunta, el mismo orden que las preguntas
-correct_answers_index = [1, 2, 0, 3, 1]
+
+# Lista de preguntas, respuestas y respuesta correcta (índice), todo junto
+questions_data = list(zip(
+    [
+        "¿Qué función se usa para obtener la longitud de una cadena en Python?",
+        "¿Cuál de las siguientes opciones es un número entero en Python?",
+        "¿Cómo se solicita entrada del usuario en Python?",
+        "¿Cuál de las siguientes expresiones es un comentario válido en Python?",
+        "¿Cuál es el operador de comparación para verificar si dos valores son iguales?"
+    ],
+    [
+        ("size()", "len()", "length()", "count()"),
+        ("3.14", "'42'", "10", "True"),
+        ("input()", "scan()", "read()", "ask()"),
+        ("// Esto es un comentario", "/* Esto es un comentario */", "-- Esto es un comentario", "# Esto es un comentario"),
+        ("=", "==", "!=", "===")
+    ],
+    [1, 2, 0, 3, 1]
+))
+
+# Seleccionamos 3 preguntas aleatorias sin repetición
+questions_to_ask = random.sample(questions_data, k=3)
+
 # Puntaje jugador
 puntaje_usuario = 0
-# El usuario deberá contestar 3 preguntas
-for _ in range(3):
- # Se selecciona una pregunta aleatoria
-   question_index = random.randint(0, len(questions)-1)
- # Se muestra la pregunta y las respuestas posibles
-   print(questions[question_index])
-   for i, answer in enumerate(answers[question_index]):
-     print(f"{i + 1}. {answer}")
- # El usuario tiene 2 intentos para responder correctamente
-   for intento in range(2):
-     try:
-       user_answer = int(input("Dame un número entero: "))-1
-     except ValueError:
-       print("Esa respuesta no es válida. Juego terminado.")
-       sys.exit(1)
-     if user_answer < 0 or user_answer >= len(answers[question_index]):
-                print("Respuesta no válida. Juego terminado. ")
-                sys.exit(1)
- # Se verifica si la respuesta es correcta
-     if user_answer == correct_answers_index[question_index]:
-       print("¡Correcto!")
-       puntaje_usuario = puntaje_usuario + 1
-       break
-     if user_answer != correct_answers_index[question_index]:
-        puntaje_usuario = puntaje_usuario - 0.5
-   else:
- # Si el usuario no responde correctamente después de 2 intentos,
- # se muestra la respuesta correcta
-     print("Incorrecto. La respuesta correcta es:")
-     print(answers[question_index] [correct_answers_index[question_index]])
- # Se imprime un blanco al final de la pregunta
-   print()
-print('Tu puntaje es de ',puntaje_usuario)
 
+# Recorremos las preguntas seleccionadas
+for question, options, correct_index in questions_to_ask:
+    print(question)
+    for i, option in enumerate(options):
+        print(f"{i + 1}. {option}")
+
+    for attempt in range(2):
+        try:
+            user_input = input("Respuesta: ")
+            user_answer = int(user_input) - 1
+
+            if user_answer < 0 or user_answer >= len(options):
+                print("Respuesta no válida")
+                sys.exit(1)
+
+            if user_answer == correct_index:
+                print("¡Correcto!")
+                puntaje_usuario = puntaje_usuario + 1
+                break
+            else:
+                puntaje_usuario = puntaje_usuario -0.5
+                print("Incorrecto. Intenta de nuevo.")
+
+        except ValueError:
+            print("Respuesta no válida")
+            sys.exit(1)
+
+    else:
+        print("Incorrecto. La respuesta correcta es:")
+        print(options[correct_index])
+
+    print()
+print("Elpuntaje obtenido es de",puntaje_usuario)
